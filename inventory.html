@@ -6,16 +6,26 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <img src="banner.svg" alt="자재 관리 배너" width="600" height="200">
+  </header>
   <nav>
-    <a href="index.html">홈</a> |
-    <a href="inventory.html">재고 현황</a> |
+    <a href="index.html">홈</a>
+    <a href="inventory.html">재고 현황</a>
     <a href="suppliers.html">공급업체</a>
   </nav>
-  <h1>재고 현황</h1>
-  <ul>
-    <li>철근: 100개</li>
-    <li>콘크리트: 50포대</li>
-    <li>볼트: 200개</li>
-  </ul>
+  <main>
+    <h1>재고 현황</h1>
+    <table>
+      <thead>
+        <tr><th>품목</th><th>수량</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>철근</td><td>100개</td></tr>
+        <tr><td>콘크리트</td><td>50포대</td></tr>
+        <tr><td>볼트</td><td>200개</td></tr>
+      </tbody>
+    </table>
+  </main>
 </body>
 </html>
