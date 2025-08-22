@@ -18,14 +18,17 @@
     <h1>재고 현황</h1>
     <table>
       <thead>
-        <tr><th>품목</th><th>수량</th></tr>
+        <tr><th>품목</th><th>수량</th><th>작업</th></tr>
       </thead>
-      <tbody>
-        <tr><td>철근</td><td>100개</td></tr>
-        <tr><td>콘크리트</td><td>50포대</td></tr>
-        <tr><td>볼트</td><td>200개</td></tr>
+      <tbody id="inventory-body">
       </tbody>
     </table>
+    <form id="add-form">
+      <input type="text" id="item-name" placeholder="품목" required>
+      <input type="text" id="item-qty" placeholder="수량" required>
+      <button type="submit">추가</button>
+    </form>
   </main>
+  <script src="inventory.js"></script>
 </body>
 </html>
