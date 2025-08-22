@@ -56,6 +56,17 @@ def test_inventory_and_suppliers():
         items = json.loads(body)
         assert len(items) == 1 and items[0]['id'] == item_id
 
+        status, _ = request(
+            'PUT',
+            base + f'/api/inventory/{item_id}',
+            json.dumps({'quantity': '200'}).encode(),
+        )
+        assert status == 200
+
+        status, body = request('GET', base + '/api/inventory')
+        items = json.loads(body)
+        assert items[0]['quantity'] == '200'
+
         status, _ = request('DELETE', base + f'/api/inventory/{item_id}')
         assert status == 200
 
@@ -70,6 +81,17 @@ def test_inventory_and_suppliers():
         status, body = request('GET', base + '/api/suppliers')
         sups = json.loads(body)
         assert len(sups) == 1 and sups[0]['id'] == sup_id
+
+        status, _ = request(
+            'PUT',
+            base + f'/api/suppliers/{sup_id}',
+            json.dumps({'note': 'updated'}).encode(),
+        )
+        assert status == 200
+
+        status, body = request('GET', base + '/api/suppliers')
+        sups = json.loads(body)
+        assert sups[0]['note'] == 'updated'
 
         status, _ = request('DELETE', base + f'/api/suppliers/{sup_id}')
         assert status == 200

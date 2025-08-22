@@ -84,6 +84,67 @@ class MaterialHandler(SimpleHTTPRequestHandler):
         else:
             self.send_error(404)
 
+    def do_PUT(self):
+        parsed = urlparse(self.path)
+        if parsed.path.startswith('/api/inventory/'):
+            try:
+                item_id = int(parsed.path.rsplit('/', 1)[1])
+            except ValueError:
+                self.send_json({'error': 'invalid id'}, 400)
+                return
+            data = self.read_json()
+            if not any(k in data for k in ('name', 'quantity')):
+                self.send_json({'error': 'invalid data'}, 400)
+                return
+            conn = sqlite3.connect(db_path())
+            cur = conn.cursor()
+            fields, values = [], []
+            if 'name' in data:
+                fields.append('name=?')
+                values.append(data['name'])
+            if 'quantity' in data:
+                fields.append('quantity=?')
+                values.append(data['quantity'])
+            values.append(item_id)
+            cur.execute(f"UPDATE inventory SET {', '.join(fields)} WHERE id=?", values)
+            if cur.rowcount == 0:
+                conn.close()
+                self.send_json({'error': 'not found'}, 404)
+                return
+            conn.commit()
+            conn.close()
+            self.send_json({})
+        elif parsed.path.startswith('/api/suppliers/'):
+            try:
+                sup_id = int(parsed.path.rsplit('/', 1)[1])
+            except ValueError:
+                self.send_json({'error': 'invalid id'}, 400)
+                return
+            data = self.read_json()
+            if not any(k in data for k in ('name', 'note')):
+                self.send_json({'error': 'invalid data'}, 400)
+                return
+            conn = sqlite3.connect(db_path())
+            cur = conn.cursor()
+            fields, values = [], []
+            if 'name' in data:
+                fields.append('name=?')
+                values.append(data['name'])
+            if 'note' in data:
+                fields.append('note=?')
+                values.append(data['note'])
+            values.append(sup_id)
+            cur.execute(f"UPDATE suppliers SET {', '.join(fields)} WHERE id=?", values)
+            if cur.rowcount == 0:
+                conn.close()
+                self.send_json({'error': 'not found'}, 404)
+                return
+            conn.commit()
+            conn.close()
+            self.send_json({})
+        else:
+            self.send_error(404)
+
     def do_DELETE(self):
         parsed = urlparse(self.path)
         if parsed.path.startswith('/api/inventory/'):
