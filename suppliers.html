@@ -18,14 +18,17 @@
     <h1>공급업체 목록</h1>
     <table>
       <thead>
-        <tr><th>업체명</th><th>비고</th></tr>
+        <tr><th>업체명</th><th>비고</th><th>작업</th></tr>
       </thead>
-      <tbody>
-        <tr><td>ABC 자재</td><td>주요 철근 공급</td></tr>
-        <tr><td>XYZ 건설</td><td>콘크리트 납품</td></tr>
-        <tr><td>123 산업</td><td>볼트 및 너트</td></tr>
+      <tbody id="supplier-body">
       </tbody>
     </table>
+    <form id="supplier-form">
+      <input type="text" id="supplier-name" placeholder="업체명" required>
+      <input type="text" id="supplier-note" placeholder="비고" required>
+      <button type="submit">추가</button>
+    </form>
   </main>
+  <script src="suppliers.js"></script>
 </body>
 </html>
