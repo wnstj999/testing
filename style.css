@@ -77,11 +77,22 @@ form button:hover {
 table button {
   padding: 4px 8px;
   border: none;
-  background-color: #e74c3c;
   color: #fff;
   cursor: pointer;
 }
 
-table button:hover {
+table button.delete {
+  background-color: #e74c3c;
+}
+
+table button.delete:hover {
   background-color: #c0392b;
+}
+
+table button.edit {
+  background-color: #3498db;
+}
+
+table button.edit:hover {
+  background-color: #2980b9;
 }

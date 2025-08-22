@@ -1,52 +1,53 @@
-const supplierKey = 'suppliers';
-
-function getSuppliers() {
-  const suppliers = JSON.parse(localStorage.getItem(supplierKey));
-  if (!suppliers) {
-    const defaults = [
-      { name: 'ABC 자재', note: '주요 철근 공급' },
-      { name: 'XYZ 건설', note: '콘크리트 납품' },
-      { name: '123 산업', note: '볼트 및 너트' }
-    ];
-    localStorage.setItem(supplierKey, JSON.stringify(defaults));
-    return defaults;
-  }
-  return suppliers;
+async function fetchSuppliers() {
+  const response = await fetch('/api/suppliers');
+  return await response.json();
 }
 
-function saveSuppliers(list) {
-  localStorage.setItem(supplierKey, JSON.stringify(list));
-}
-
-function render() {
+async function render() {
   const tbody = document.getElementById('supplier-body');
   tbody.innerHTML = '';
-  getSuppliers().forEach((sup, index) => {
+  const items = await fetchSuppliers();
+  items.forEach(item => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${sup.name}</td><td>${sup.note}</td><td><button data-index="${index}">삭제</button></td>`;
+    row.innerHTML = `<td>${item.name}</td><td>${item.note}</td><td><button class="edit" data-id="${item.id}">수정</button> <button class="delete" data-id="${item.id}">삭제</button></td>`;
     tbody.appendChild(row);
   });
 }
 
-document.getElementById('supplier-form').addEventListener('submit', event => {
+document.getElementById('supplier-form').addEventListener('submit', async event => {
   event.preventDefault();
   const name = document.getElementById('supplier-name').value.trim();
   const note = document.getElementById('supplier-note').value.trim();
   if (!name || !note) return;
-  const list = getSuppliers();
-  list.push({ name, note });
-  saveSuppliers(list);
+  await fetch('/api/suppliers', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, note })
+  });
   event.target.reset();
   render();
 });
 
-document.getElementById('supplier-body').addEventListener('click', event => {
-  if (event.target.tagName === 'BUTTON') {
-    const index = event.target.dataset.index;
-    const list = getSuppliers();
-    list.splice(index, 1);
-    saveSuppliers(list);
+document.getElementById('supplier-body').addEventListener('click', async event => {
+  if (event.target.matches('button.delete')) {
+    const id = event.target.dataset.id;
+    await fetch(`/api/suppliers/${id}`, { method: 'DELETE' });
     render();
+  } else if (event.target.matches('button.edit')) {
+    const id = event.target.dataset.id;
+    const row = event.target.closest('tr');
+    const currentName = row.children[0].textContent;
+    const currentNote = row.children[1].textContent;
+    const name = prompt('공급업체', currentName);
+    const note = prompt('비고', currentNote);
+    if (name && note) {
+      await fetch(`/api/suppliers/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, note })
+      });
+      render();
+    }
   }
 });
 
