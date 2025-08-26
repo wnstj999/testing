@@ -1,0 +1,8 @@
+{
+  "name": "materials-management",
+  "version": "1.0.0",
+  "description": "Material management frontend assets",
+  "scripts": {
+    "test": "echo 'No JS tests yet'"
+  }
+}

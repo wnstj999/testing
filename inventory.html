@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>재고 현황</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="banner.svg" alt="자재 관리 배너" width="600" height="200">
+  </header>
+  <nav>
+    <a href="index.html">홈</a>
+    <a href="inventory.html">재고 현황</a>
+    <a href="suppliers.html">공급업체</a>
+  </nav>
+  <main>
+    <h1>재고 현황</h1>
+    <table>
+      <thead>
+        <tr><th>품목</th><th>수량</th><th>작업</th></tr>
+      </thead>
+      <tbody id="inventory-body">
+      </tbody>
+    </table>
+    <form id="add-form">
+      <input type="text" id="item-name" placeholder="품목" required>
+      <input type="number" id="item-qty" placeholder="수량" required>
+      <button type="submit">추가</button>
+    </form>
+  </main>
+  <script src="inventory.js"></script>
+</body>
+</html>
